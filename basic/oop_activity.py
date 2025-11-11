@@ -192,3 +192,73 @@ print(human.speak())
 print(human.give_birth())
 print(human.breathe())
 print()
+
+# ============================================================================
+# 4. POLYMORPHISM
+# ============================================================================
+print("=" * 60)
+print("4. POLYMORPHISM")
+print("=" * 60)
+
+# A. Method Overriding (Runtime Polymorphism)
+class Shape:
+    """Base class for shapes"""
+    
+    def area(self):
+        return 0
+    
+    def perimeter(self):
+        return 0
+
+class Circle(Shape):
+    """Circle with overridden methods"""
+    
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def area(self):
+        return 3.14159 * self.radius ** 2
+    
+    def perimeter(self):
+        return 2 * 3.14159 * self.radius
+
+class Rectangle(Shape):
+    """Rectangle with overridden methods"""
+    
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+    
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+class Triangle(Shape):
+    """Triangle with overridden methods"""
+    
+    def __init__(self, base, height, side1, side2, side3):
+        self.base = base
+        self.height = height
+        self.side1 = side1
+        self.side2 = side2
+        self.side3 = side3
+    
+    def area(self):
+        return 0.5 * self.base * self.height
+    
+    def perimeter(self):
+        return self.side1 + self.side2 + self.side3
+
+# Polymorphism in action
+shapes = [
+    Circle(5),
+    Rectangle(4, 6),
+    Triangle(3, 4, 3, 4, 5)
+]
+
+print("Polymorphism - Different shapes, same interface:")
+for shape in shapes:
+    print(f"{shape.__class__.__name__}: Area = {shape.area():.2f}, Perimeter = {shape.perimeter():.2f}")
+print()
