@@ -78,3 +78,88 @@ print(account.withdraw(200))
 print(f"Current balance: ${account.get_balance()}")
 # print(account.__balance)  # This would raise AttributeError
 print()
+
+# ============================================================================
+# 3. INHERITANCE
+# ============================================================================
+print("=" * 60)
+print("3. INHERITANCE")
+print("=" * 60)
+
+# A. Single Inheritance
+class Animal:
+    """Parent/Base class"""
+    
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+    
+    def make_sound(self):
+        return "Some generic animal sound"
+    
+    def info(self):
+        return f"{self.name} is a {self.species}"
+
+class Dog(Animal):
+    """Child/Derived class - Single Inheritance"""
+    
+    def __init__(self, name, breed):
+        super().__init__(name, "Dog")
+        self.breed = breed
+    
+    def make_sound(self):
+        return "Woof! Woof!"
+    
+    def fetch(self):
+        return f"{self.name} is fetching the ball!"
+
+class Cat(Animal):
+    """Another child class"""
+    
+    def __init__(self, name, color):
+        super().__init__(name, "Cat")
+        self.color = color
+    
+    def make_sound(self):
+        return "Meow! Meow!"
+
+# Using inheritance
+dog = Dog("Buddy", "Golden Retriever")
+cat = Cat("Whiskers", "Orange")
+
+print(dog.info())
+print(dog.make_sound())
+print(dog.fetch())
+print()
+print(cat.info())
+print(cat.make_sound())
+print()
+
+# B. Multiple Inheritance
+class Flyer:
+    """Mixin class for flying capability"""
+    
+    def fly(self):
+        return "Flying in the sky!"
+
+class Swimmer:
+    """Mixin class for swimming capability"""
+    
+    def swim(self):
+        return "Swimming in the water!"
+
+class Duck(Animal, Flyer, Swimmer):
+    """Multiple Inheritance - inherits from multiple classes"""
+    
+    def __init__(self, name):
+        super().__init__(name, "Duck")
+    
+    def make_sound(self):
+        return "Quack! Quack!"
+
+duck = Duck("Donald")
+print(f"\n{duck.info()}")
+print(duck.make_sound())
+print(duck.fly())
+print(duck.swim())
+print()
