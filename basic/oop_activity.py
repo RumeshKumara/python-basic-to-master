@@ -406,3 +406,48 @@ print(f"Employee 2: {emp2.name}, Salary: ${emp2.salary}")
 print(f"Is Monday a workday? {Employee.is_workday('Monday')}")
 print(f"Is Saturday a workday? {Employee.is_workday('Saturday')}")
 print()
+
+# ============================================================================
+# 7. PROPERTY DECORATORS (GETTERS AND SETTERS)
+# ============================================================================
+print("=" * 60)
+print("7. PROPERTY DECORATORS")
+print("=" * 60)
+
+class Temperature:
+    """Demonstrates property decorators for controlled attribute access"""
+    
+    def __init__(self, celsius):
+        self._celsius = celsius
+    
+    @property
+    def celsius(self):
+        """Getter for celsius"""
+        return self._celsius
+    
+    @celsius.setter
+    def celsius(self, value):
+        """Setter for celsius with validation"""
+        if value < -273.15:
+            raise ValueError("Temperature cannot be below absolute zero (-273.15°C)")
+        self._celsius = value
+    
+    @property
+    def fahrenheit(self):
+        """Convert celsius to fahrenheit"""
+        return (self._celsius * 9/5) + 32
+    
+    @fahrenheit.setter
+    def fahrenheit(self, value):
+        """Set temperature using fahrenheit"""
+        self._celsius = (value - 32) * 5/9
+
+temp = Temperature(25)
+print(f"Temperature: {temp.celsius}°C = {temp.fahrenheit}°F")
+
+temp.celsius = 30
+print(f"After setting celsius to 30: {temp.celsius}°C = {temp.fahrenheit}°F")
+
+temp.fahrenheit = 68
+print(f"After setting fahrenheit to 68: {temp.celsius}°C = {temp.fahrenheit}°F")
+print()
