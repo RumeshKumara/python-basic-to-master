@@ -163,3 +163,32 @@ print(duck.make_sound())
 print(duck.fly())
 print(duck.swim())
 print()
+
+# C. Multilevel Inheritance
+class LivingBeing:
+    """Grandparent class"""
+    
+    def breathe(self):
+        return "Breathing..."
+
+class Mammal(LivingBeing):
+    """Parent class"""
+    
+    def give_birth(self):
+        return "Giving birth to live young"
+
+class Human(Mammal):
+    """Child class - Multilevel Inheritance"""
+    
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        return f"{self.name} is speaking"
+
+human = Human("Sarah")
+print(f"Multilevel Inheritance:")
+print(human.speak())
+print(human.give_birth())
+print(human.breathe())
+print()
