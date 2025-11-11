@@ -366,3 +366,43 @@ print()
 print(motorcycle.start_engine())
 print(motorcycle.stop_engine())
 print()
+
+# ============================================================================
+# 6. CLASS VARIABLES VS INSTANCE VARIABLES
+# ============================================================================
+print("=" * 60)
+print("6. CLASS VARIABLES VS INSTANCE VARIABLES")
+print("=" * 60)
+
+class Employee:
+    """Demonstrates class vs instance variables"""
+    
+    company_name = "TechCorp"  # Class variable (shared by all instances)
+    employee_count = 0          # Class variable
+    
+    def __init__(self, name, salary):
+        self.name = name        # Instance variable (unique to each instance)
+        self.salary = salary    # Instance variable
+        Employee.employee_count += 1
+    
+    @classmethod
+    def get_employee_count(cls):
+        """Class method - works with class variables"""
+        return cls.employee_count
+    
+    @staticmethod
+    def is_workday(day):
+        """Static method - doesn't access instance or class variables"""
+        return day not in ['Saturday', 'Sunday']
+
+emp1 = Employee("Alice", 50000)
+emp2 = Employee("Bob", 60000)
+emp3 = Employee("Charlie", 55000)
+
+print(f"Company: {Employee.company_name}")
+print(f"Total Employees: {Employee.get_employee_count()}")
+print(f"Employee 1: {emp1.name}, Salary: ${emp1.salary}")
+print(f"Employee 2: {emp2.name}, Salary: ${emp2.salary}")
+print(f"Is Monday a workday? {Employee.is_workday('Monday')}")
+print(f"Is Saturday a workday? {Employee.is_workday('Saturday')}")
+print()
