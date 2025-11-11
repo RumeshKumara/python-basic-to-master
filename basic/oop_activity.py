@@ -262,3 +262,50 @@ print("Polymorphism - Different shapes, same interface:")
 for shape in shapes:
     print(f"{shape.__class__.__name__}: Area = {shape.area():.2f}, Perimeter = {shape.perimeter():.2f}")
 print()
+
+# B. Operator Overloading (Special Methods)
+class Vector:
+    """Demonstrates operator overloading"""
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __add__(self, other):
+        """Overload + operator"""
+        return Vector(self.x + other.x, self.y + other.y)
+    
+    def __sub__(self, other):
+        """Overload - operator"""
+        return Vector(self.x - other.x, self.y - other.y)
+    
+    def __mul__(self, scalar):
+        """Overload * operator for scalar multiplication"""
+        return Vector(self.x * scalar, self.y * scalar)
+    
+    def __str__(self):
+        """Overload str() function"""
+        return f"Vector({self.x}, {self.y})"
+    
+    def __repr__(self):
+        """Overload repr() function"""
+        return f"Vector({self.x}, {self.y})"
+    
+    def __eq__(self, other):
+        """Overload == operator"""
+        return self.x == other.x and self.y == other.y
+
+v1 = Vector(2, 3)
+v2 = Vector(4, 5)
+v3 = v1 + v2
+v4 = v2 - v1
+v5 = v1 * 3
+
+print("Operator Overloading:")
+print(f"v1 = {v1}")
+print(f"v2 = {v2}")
+print(f"v1 + v2 = {v3}")
+print(f"v2 - v1 = {v4}")
+print(f"v1 * 3 = {v5}")
+print(f"v1 == v2: {v1 == v2}")
+print()
