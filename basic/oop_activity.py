@@ -451,3 +451,262 @@ print(f"After setting celsius to 30: {temp.celsius}°C = {temp.fahrenheit}°F")
 temp.fahrenheit = 68
 print(f"After setting fahrenheit to 68: {temp.celsius}°C = {temp.fahrenheit}°F")
 print()
+
+# ============================================================================
+# 8. COMPOSITION (HAS-A RELATIONSHIP)
+# ============================================================================
+print("=" * 60)
+print("8. COMPOSITION (Has-A Relationship)")
+print("=" * 60)
+
+class Engine:
+    """Component class"""
+    
+    def __init__(self, horsepower):
+        self.horsepower = horsepower
+    
+    def start(self):
+        return f"Engine with {self.horsepower}hp started"
+
+class Wheel:
+    """Component class"""
+    
+    def __init__(self, size):
+        self.size = size
+    
+    def rotate(self):
+        return f"{self.size}-inch wheel rotating"
+
+class CarComposition:
+    """Composition - Car HAS-A Engine and Wheels"""
+    
+    def __init__(self, brand, engine_hp, wheel_size):
+        self.brand = brand
+        self.engine = Engine(engine_hp)  # Composition
+        self.wheels = [Wheel(wheel_size) for _ in range(4)]  # Composition
+    
+    def start_car(self):
+        print(f"{self.brand} car starting:")
+        print(f"  {self.engine.start()}")
+        for i, wheel in enumerate(self.wheels, 1):
+            print(f"  Wheel {i}: {wheel.rotate()}")
+
+my_car = CarComposition("Honda", 200, 17)
+my_car.start_car()
+print()
+
+
+# ============================================================================
+# 9. SPECIAL/MAGIC METHODS (DUNDER METHODS)
+# ============================================================================
+print("=" * 60)
+print("9. SPECIAL/MAGIC METHODS")
+print("=" * 60)
+
+class Book:
+    """Demonstrates various special methods"""
+    
+    def __init__(self, title, author, pages):
+        self.title = title
+        self.author = author
+        self.pages = pages
+    
+    def __str__(self):
+        """Called by str() and print()"""
+        return f"'{self.title}' by {self.author}"
+    
+    def __repr__(self):
+        """Called by repr() - should be unambiguous"""
+        return f"Book('{self.title}', '{self.author}', {self.pages})"
+    
+    def __len__(self):
+        """Called by len()"""
+        return self.pages
+    
+    def __eq__(self, other):
+        """Called by == operator"""
+        return self.title == other.title and self.author == other.author
+    
+    def __lt__(self, other):
+        """Called by < operator"""
+        return self.pages < other.pages
+    
+    def __add__(self, other):
+        """Called by + operator"""
+        return f"Book Series: {self.title} & {other.title}"
+
+book1 = Book("Python Programming", "John Smith", 350)
+book2 = Book("Data Science Handbook", "Jane Doe", 420)
+book3 = Book("Python Programming", "John Smith", 350)
+
+print(f"String representation: {book1}")
+print(f"Repr representation: {repr(book1)}")
+print(f"Length (pages): {len(book1)}")
+print(f"book1 == book2: {book1 == book2}")
+print(f"book1 == book3: {book1 == book3}")
+print(f"book1 < book2: {book1 < book2}")
+print(f"book1 + book2: {book1 + book2}")
+print()
+
+
+# ============================================================================
+# 10. METHOD RESOLUTION ORDER (MRO)
+# ============================================================================
+print("=" * 60)
+print("10. METHOD RESOLUTION ORDER (MRO)")
+print("=" * 60)
+
+class A:
+    def process(self):
+        return "Process from A"
+
+class B(A):
+    def process(self):
+        return "Process from B"
+
+class C(A):
+    def process(self):
+        return "Process from C"
+
+class D(B, C):
+    pass
+
+obj = D()
+print(f"Method Resolution Order for class D: {D.__mro__}")
+print(f"Calling process(): {obj.process()}")
+print()
+
+
+# ============================================================================
+# 11. REAL-WORLD EXAMPLE: LIBRARY MANAGEMENT SYSTEM
+# ============================================================================
+print("=" * 60)
+print("11. REAL-WORLD EXAMPLE: LIBRARY MANAGEMENT SYSTEM")
+print("=" * 60)
+
+class LibraryItem(ABC):
+    """Abstract base class for library items"""
+    
+    def __init__(self, title, item_id):
+        self.title = title
+        self.item_id = item_id
+        self.is_borrowed = False
+    
+    @abstractmethod
+    def get_late_fee(self, days_late):
+        pass
+    
+    def borrow(self):
+        if not self.is_borrowed:
+            self.is_borrowed = True
+            return f"{self.title} has been borrowed"
+        return f"{self.title} is already borrowed"
+    
+    def return_item(self):
+        if self.is_borrowed:
+            self.is_borrowed = False
+            return f"{self.title} has been returned"
+        return f"{self.title} was not borrowed"
+
+class LibraryBook(LibraryItem):
+    """Book in library"""
+    
+    def __init__(self, title, item_id, author, isbn):
+        super().__init__(title, item_id)
+        self.author = author
+        self.isbn = isbn
+    
+    def get_late_fee(self, days_late):
+        return days_late * 0.50  # $0.50 per day
+    
+    def __str__(self):
+        return f"Book: '{self.title}' by {self.author}"
+
+class LibraryDVD(LibraryItem):
+    """DVD in library"""
+    
+    def __init__(self, title, item_id, director, duration):
+        super().__init__(title, item_id)
+        self.director = director
+        self.duration = duration
+    
+    def get_late_fee(self, days_late):
+        return days_late * 1.00  # $1.00 per day
+    
+    def __str__(self):
+        return f"DVD: '{self.title}' directed by {self.director}"
+
+class Member:
+    """Library member"""
+    
+    def __init__(self, name, member_id):
+        self.name = name
+        self.member_id = member_id
+        self.borrowed_items = []
+    
+    def borrow_item(self, item):
+        result = item.borrow()
+        if "has been borrowed" in result:
+            self.borrowed_items.append(item)
+        return result
+    
+    def return_item(self, item):
+        result = item.return_item()
+        if "has been returned" in result and item in self.borrowed_items:
+            self.borrowed_items.remove(item)
+        return result
+    
+    def list_borrowed_items(self):
+        if not self.borrowed_items:
+            return f"{self.name} has no borrowed items"
+        items = ", ".join([item.title for item in self.borrowed_items])
+        return f"{self.name}'s borrowed items: {items}"
+
+# Using the library system
+book1 = LibraryBook("1984", "B001", "George Orwell", "978-0451524935")
+dvd1 = LibraryDVD("Inception", "D001", "Christopher Nolan", 148)
+member1 = Member("Alice Johnson", "M001")
+
+print(book1)
+print(dvd1)
+print()
+print(member1.borrow_item(book1))
+print(member1.borrow_item(dvd1))
+print(member1.list_borrowed_items())
+print()
+print(f"Late fee for book (5 days): ${book1.get_late_fee(5)}")
+print(f"Late fee for DVD (5 days): ${dvd1.get_late_fee(5)}")
+print()
+print(member1.return_item(book1))
+print(member1.list_borrowed_items())
+print()
+
+
+# ============================================================================
+# SUMMARY OF OOP PRINCIPLES
+# ============================================================================
+print("=" * 60)
+print("SUMMARY OF OOP PRINCIPLES")
+print("=" * 60)
+print("""
+1. ENCAPSULATION: Bundle data and methods, hide internal details
+2. INHERITANCE: Reuse code by creating parent-child relationships
+3. POLYMORPHISM: Same interface, different implementations
+4. ABSTRACTION: Hide complexity, show only essential features
+
+Additional Concepts:
+- Class vs Instance variables
+- Static methods and Class methods
+- Property decorators (getters/setters)
+- Composition (has-a relationship)
+- Special/Magic methods
+- Method Resolution Order (MRO)
+
+SOLID Principles:
+- Single Responsibility Principle
+- Open/Closed Principle
+- Liskov Substitution Principle
+- Interface Segregation Principle
+- Dependency Inversion Principle
+""")
+print("=" * 60)
