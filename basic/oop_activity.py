@@ -309,3 +309,60 @@ print(f"v2 - v1 = {v4}")
 print(f"v1 * 3 = {v5}")
 print(f"v1 == v2: {v1 == v2}")
 print()
+
+# ============================================================================
+# 5. ABSTRACTION
+# ============================================================================
+print("=" * 60)
+print("5. ABSTRACTION")
+print("=" * 60)
+
+class Vehicle(ABC):
+    """Abstract base class - cannot be instantiated"""
+    
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
+    
+    @abstractmethod
+    def start_engine(self):
+        """Abstract method - must be implemented by child classes"""
+        pass
+    
+    @abstractmethod
+    def stop_engine(self):
+        """Abstract method - must be implemented by child classes"""
+        pass
+    
+    def display_info(self):
+        """Concrete method - can be used by all child classes"""
+        return f"{self.brand} {self.model}"
+
+class Car(Vehicle):
+    """Concrete class implementing abstract methods"""
+    
+    def start_engine(self):
+        return f"{self.display_info()}: Engine started with key"
+    
+    def stop_engine(self):
+        return f"{self.display_info()}: Engine stopped"
+
+class Motorcycle(Vehicle):
+    """Another concrete class"""
+    
+    def start_engine(self):
+        return f"{self.display_info()}: Engine started with kick/button"
+    
+    def stop_engine(self):
+        return f"{self.display_info()}: Engine stopped"
+
+# Using abstraction
+car = Car("Toyota", "Camry")
+motorcycle = Motorcycle("Harley-Davidson", "Street 750")
+
+print(car.start_engine())
+print(car.stop_engine())
+print()
+print(motorcycle.start_engine())
+print(motorcycle.stop_engine())
+print()
